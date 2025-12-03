@@ -1,4 +1,4 @@
-interface Product {
+export interface Product {
     description: string;
     price: number;
 }
@@ -18,7 +18,7 @@ const tablet: Product = {
     price: 250.0,
 }
 
-const taxtCalculation = (options: TaxCalculationOptions): [number, number] => {
+export const taxtCalculation = (options: TaxCalculationOptions): [number, number] => {
 
     const { products, tax } = options;
     let total = 0;
