@@ -1,14 +1,10 @@
 export class Person{
-    public name: string;
-    private address: string;
 
-    constructor(){
-        this.name = 'Edwin';
-        this.address = 'Unknown';
-    }
+    constructor(public name: string, private address: string)
+    {}
 }
 
-const iroman = new Person();
+const iroman = new Person('Edwin Alexander Bernardino Moran', 'Av. Siempre Viva 742');
 
 console.log(iroman.name); // Edwin
 console.log(iroman.address)
