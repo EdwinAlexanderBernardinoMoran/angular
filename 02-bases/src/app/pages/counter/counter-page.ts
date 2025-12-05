@@ -15,6 +15,13 @@ export class CounterPage{
   counter = 0;
   counterSignal = signal(0);
 
+  constructor() {
+    setInterval(() => {
+      this.counterSignal.update((v) => v + 1);
+      console.log('Tick')
+    }, 2000)
+  }
+
   increaseBy(value: number){
     this.counter += value;
 
