@@ -1,12 +1,12 @@
-# angular
+# Angular
 
 Curso de Angular de cero a experto
 
 ### Angular es multi-plaforma
 
-**Web**: SPA, SSR, SSG
-**Movil**: ionic, NativeScript
-**Desktop**: Electron
+- **Web**: SPA, SSR, SSG
+- **Movil**: ionic, NativeScript
+- **Desktop**: Electron
 
 Angular posee
 
@@ -18,9 +18,35 @@ Angular posee
 
 ## Bloques fundamentales
 
-**Componente**: Es una pieza que representa una parte de la interfaz de usuario.`Logica (TS), Estilos - (SASS, CSS, etc), Plantilla HTML`
-**Rutas**: Permiten cambiar paginas (Componentes que usualmente cubren todo el punto de vista), separar logica, control de acceso y autorizacion, estrategias de renderizado.
-**Directivas**: Modifican el comportamiento de un elemento HTML, atributo `ngClass, NgStyle`, estructurales `nfIf, ngFor`, componente `personalizadas`.
-**Servicios**: Encapsulan logica de negocio y centralizan su acceso. `Gestion de datos, reutilizacion de codigo, inyeccion de dependencias`.
-**Modulos**: Agrupan funcionalidades relacionadas, permitiendo su uso en otros componentes o modulos. `Organizan la aplicacion, encapsulan depencias, facilitan la carga bajo demanda`.
-**Pipes**: Transforman datos de forma visual para representarlos apropiadamente en los componentes. `Modifican como se presentan datos, ordenar y filtrar, optimizacion de rendimiento`. Los pipe puros se evaluan cada vez que el argumento cambia y los impuros cada vez que hay un cambio de ciclo de vida en la aplicacion de angular.
+- **Componente**: Es una pieza que representa una parte de la interfaz de usuario.`Logica (TS), Estilos - (SASS, CSS, etc), Plantilla HTML`
+- **Rutas**: Permiten cambiar paginas (Componentes que usualmente cubren todo el punto de vista), separar logica, control de acceso y autorizacion, estrategias de renderizado.
+- **Directivas**: Modifican el comportamiento de un elemento HTML, atributo `ngClass, NgStyle`, estructurales `nfIf, ngFor`, componente `personalizadas`.
+- **Servicios**: Encapsulan logica de negocio y centralizan su acceso. `Gestion de datos, reutilizacion de codigo, inyeccion de dependencias`.
+- **Modulos**: Agrupan funcionalidades relacionadas, permitiendo su uso en otros componentes o modulos. `Organizan la aplicacion, encapsulan depencias, facilitan la carga bajo demanda`.
+- **Pipes**: Transforman datos de forma visual para representarlos apropiadamente en los componentes. `Modifican como se presentan datos, ordenar y filtrar, optimizacion de rendimiento`. Los pipe puros se evaluan cada vez que el argumento cambia y los impuros cada vez que hay un cambio de ciclo de vida en la aplicacion de angular.
+
+## Señales (Signals)
+
+Son el nuevo sistema de reactividad de Angular sirven para manejar el estado que cambia en un componente. Los `Signals` controlan el estado y reactividad.
+
+```js
+export class HeroPage {
+  name = signal("Ironman");
+  age = signal(45);
+}
+```
+
+## señales computadas (Readonly signals)
+
+Una señal computada (computed signal) es una señal de solo lectura que deriva su valor de otras señales. Se crea usando la función computed() de Angular.
+
+**Características Principales**:
+
+- Reactiva: Se actualiza automáticamente cuando cambian las señales de las que depende
+- Solo lectura: No puedes modificar su valor directamente
+- Memoizada: Solo recalcula cuando sus dependencias cambian
+- Perezosa: Se evalúa únicamente cuando se lee su valor
+
+## Zoneless
+
+Es un nuevo modo de Angular que ya no usa `zone.js`, que era el sistema antiguo para detectar cambios. Anteriormente angular con `zone.js` detectava cambios a lo loco cada vez que sucedia cualquier cosa, esto hacia a Angular mas lento, ahora solo actualiza lo necesario, gracias a `signals` y eventos controlados.
