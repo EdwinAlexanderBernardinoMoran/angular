@@ -1,14 +1,11 @@
 import { Component, computed, signal } from '@angular/core';
-
-interface Character {
-  id: number;
-  name: string;
-  powerLevel: number;
-}
+import { CharacterList } from "../../components/dragonball/character-list/character-list";
+import { Character } from '../../interfaces/character.interface';
 
 @Component({
   selector: 'app-dragonball-super',
   templateUrl: './dragonball-super-page.html',
+  imports: [CharacterList],
 })
 export class DragonballSuperPage {
   name = signal('');
