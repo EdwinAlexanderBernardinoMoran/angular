@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
 import type { Character } from '../../../interfaces/character.interface';
 
 @Component({
@@ -7,5 +7,7 @@ import type { Character } from '../../../interfaces/character.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CharacterList {
+
+  listName = input.required<string>();
   characters = input.required<Character[]>()
 }
