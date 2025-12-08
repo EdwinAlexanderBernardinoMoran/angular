@@ -1,0 +1,28 @@
+<h1>DragonBall Super Page</h1>
+<hr>
+
+<section class="row">
+  <div class="col 12 col-sm-6">
+    <h3>Agregar: {{ name() }}</h3>
+    <input type="text" class="form-control" placeholder="Nombre" [value]="name()" (change)="name.set(textName.value)" #textName>
+    <input type="text" class="form-control" placeholder="Poder" [value]="power()" (change)="power.set(+textPower.value)" #textPower>
+
+    <button (click)="addCharacter()" class="mt-2 btn btn-primary">Agregar</button>
+  </div>
+
+  <div class="col-12 col-sm-6">
+    <h3>Listado</h3>
+    <ul>
+      @for (character of characters(); track character.id; let idx = $index) {
+        @if (character.powerLevel > 500) {
+          <li>
+            <span>{{idx + 1}} - {{ character.name }}</span>
+            <strong [class.text-danger]="character.powerLevel > 9000" [class.text-primary]="character.powerLevel <= 9000">
+              ({{ character.powerLevel }})</strong>
+          </li>
+        }
+      }
+    </ul>
+  </div>
+
+</section>
