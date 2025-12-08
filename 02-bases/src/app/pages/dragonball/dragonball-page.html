@@ -16,7 +16,12 @@
       @for (character of characters(); track character.id; let idx = $index) {
         <li>
           <span>{{idx + 1}} - {{ character.name }}</span>
-          <strong class="text-danger"> ({{ character.powerLevel }})</strong>
+          <strong
+            [ngClass]="powerClasses()"
+            >
+            <!-- [class.text-danger]="character.powerLevel > 9000"
+            [class.text-primary]="character.powerLevel <= 9000" -->
+            ({{ character.powerLevel }})</strong>
         </li>
       }
     </ul>
