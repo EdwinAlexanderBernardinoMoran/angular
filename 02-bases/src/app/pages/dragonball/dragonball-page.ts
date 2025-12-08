@@ -9,10 +9,12 @@ interface Character {
 
 @Component({
   selector: 'app-dragonball',
-  imports: [NgClass],
   templateUrl: './dragonball-page.html',
 })
 export class DragonballPage {
+  name = signal('DragonBall');
+  power = signal(1000);
+
   characters = signal<Character[]>([
     {
       id: 1,
@@ -41,4 +43,22 @@ export class DragonballPage {
       'text-danger': true
     }
   })
+
+  addCharacter() {
+    if(!this.name() || !this.power() || this.power() <= 0) return;
+
+    const newCharacter: Character = {
+      id: this.characters().length + 1,
+      name: this.name(),
+      powerLevel: this.power()
+    }
+
+    this.characters.update((characters) => [...characters, newCharacter]);
+    this.resetFields();
+  }
+
+  resetFields() {
+    this.name.set('');
+    this.power.set(0);
+  }
 }
