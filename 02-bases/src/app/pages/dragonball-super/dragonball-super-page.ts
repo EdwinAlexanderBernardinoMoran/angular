@@ -9,9 +9,6 @@ import { CharacterAdd } from '../../components/dragonball/character-add/characte
   imports: [CharacterList, CharacterAdd],
 })
 export class DragonballSuperPage {
-  name = signal('');
-  power = signal(0);
-
   characters = signal<Character[]>([
     {
       id: 1,
@@ -25,27 +22,7 @@ export class DragonballSuperPage {
     }
   ])
 
-  powerClasses = computed(() => {
-    return {
-      'text-danger': true
-    }
-  })
-
-  addCharacter() {
-    if(!this.name() || !this.power() || this.power() <= 0) return;
-
-    const newCharacter: Character = {
-      id: this.characters().length + 1,
-      name: this.name(),
-      powerLevel: this.power()
-    }
-
-    this.characters.update((characters) => [...characters, newCharacter]);
-    this.resetFields();
-  }
-
-  resetFields() {
-    this.name.set('');
-    this.power.set(0);
-  }
+  addCharacter(character: Character) {
+    this.characters.update((list) => [...list, character]);
+  };
 }
