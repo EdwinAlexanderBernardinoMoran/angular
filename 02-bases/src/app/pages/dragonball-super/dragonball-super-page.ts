@@ -1,7 +1,7 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CharacterList } from "../../components/dragonball/character-list/character-list";
-import { Character } from '../../interfaces/character.interface';
 import { CharacterAdd } from '../../components/dragonball/character-add/character-add';
+import { DragonballService } from '../../services/dragonball.service';
 
 @Component({
   selector: 'app-dragonball-super',
@@ -9,20 +9,5 @@ import { CharacterAdd } from '../../components/dragonball/character-add/characte
   imports: [CharacterList, CharacterAdd],
 })
 export class DragonballSuperPage {
-  characters = signal<Character[]>([
-    {
-      id: 1,
-      name: 'Goku',
-      powerLevel: 9001
-    },
-    {
-      id: 2,
-      name: 'Vegeta',
-      powerLevel: 8000
-    }
-  ])
-
-  addCharacter(character: Character) {
-    this.characters.update((list) => [...list, character]);
-  };
+  public dragonballService = inject(DragonballService)
 }
