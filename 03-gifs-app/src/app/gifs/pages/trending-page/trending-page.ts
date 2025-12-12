@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { GifsList } from "../../components/gifs-list/gifs-list";
 import { GifsService } from '../../services/gifs.service';
 
@@ -24,7 +24,5 @@ const imageUrls: string[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class TrendingPage {
-  gifs = signal(imageUrls);
-
   gifService = inject(GifsService);
 }
