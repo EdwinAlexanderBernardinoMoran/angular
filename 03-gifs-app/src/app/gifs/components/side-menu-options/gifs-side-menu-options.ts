@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { MenuOption } from '../../interfaces/menu-option';
+import { MenuOption } from '../../interfaces/menu-option.interface';
 import { RouterLink } from "@angular/router";
 
 @Component({
