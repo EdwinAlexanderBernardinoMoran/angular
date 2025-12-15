@@ -1,28 +1,26 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { GifsList } from "../../components/gifs-list/gifs-list";
+import { ChangeDetectionStrategy, Component, ElementRef, inject, viewChild } from '@angular/core';
 import { GifsService } from '../../services/gifs.service';
-
-const imageUrls: string[] = [
-    "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-6.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-7.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-8.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-9.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-10.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-11.jpg"
-];
 
 @Component({
   selector: 'app-trending-page',
-  // imports: [GifsList],
   templateUrl: './trending-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class TrendingPage {
   gifService = inject(GifsService);
+
+  // Referencia al elemento HTML del componente
+  scrollDivRef = viewChild<ElementRef<HTMLDivElement>>('groupContainer');
+
+  onScroll(event: Event){
+
+    // Obtenemos la referencia al elemento HTML usando la referencia creada con viewChild
+    const scrollDiv = this.scrollDivRef()?.nativeElement;
+    if (!scrollDiv) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = scrollDiv;
+
+    const isAtBottom = scrollTop + clientHeight + 300 >= scrollHeight;
+    console.log({isAtBottom});
+  }
 }
