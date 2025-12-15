@@ -19,7 +19,7 @@ const imageUrls: string[] = [
 
 @Component({
   selector: 'app-trending-page',
-  imports: [GifsList],
+  // imports: [GifsList],
   templateUrl: './trending-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

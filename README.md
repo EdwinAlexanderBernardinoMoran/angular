@@ -16,6 +16,10 @@ Angular posee
 - Peticiones HTTP
 - Directivas
 
+## Comandos fundamentales en angular
+
+- ng g environments: Genera variables de entorno
+
 ## Bloques fundamentales
 
 - **Componente**: Es una pieza que representa una parte de la interfaz de usuario.`Logica (TS), Estilos - (SASS, CSS, etc), Plantilla HTML`
@@ -36,7 +40,7 @@ export class HeroPage {
 }
 ```
 
-## señales computadas (Readonly signals)
+## Señales computadas (Readonly signals)
 
 Una señal computada (computed signal) es una señal de solo lectura que deriva su valor de otras señales. Se crea usando la función computed() de Angular.
 
@@ -50,3 +54,164 @@ Una señal computada (computed signal) es una señal de solo lectura que deriva 
 ## Zoneless
 
 Es un nuevo modo de Angular que ya no usa `zone.js`, que era el sistema antiguo para detectar cambios. Anteriormente angular con `zone.js` detectava cambios a lo loco cada vez que sucedia cualquier cosa, esto hacia a Angular mas lento, ahora solo actualiza lo necesario, gracias a `signals` y eventos controlados.
+
+## RouterLink
+
+Es una directiva de Angular que permite crear enlaces de navegación declarativos en tus plantillas. Convierte elementos HTML en enlaces que navegan a diferentes rutas de tu aplicación sin recargar la página.
+
+**Características Principales**:
+
+- `Navegación SPA`: Mantiene la experiencia de Single Page Application
+- `Type-safe`: Puede recibir rutas como strings o arrays
+- `Gestión automática`: Añade la clase CSS active cuando la ruta está activa (con routerLinkActive)
+
+```js
+import { Component } from "@angular/core";
+import { RouterLink } from "@angular/router";
+
+@Component({
+  selector: "app-navigation",
+  imports: [RouterLink],
+  template: `
+    <!-- Navegación simple -->
+    <a routerLink="/home">Inicio</a>
+
+    <!-- Con parámetros -->
+    <a [routerLink]="['/user', userId]">Ver Usuario</a>
+
+    <!-- Navegación relativa -->
+    <a routerLink="../sibling">Hermano</a>
+  `,
+})
+export class NavigationComponent {
+  userId = 123;
+}
+```
+
+## HttpClient
+
+Es el servicio oficial de Angular para realizar peticiones HTTP. Es la forma moderna y recomendada de comunicarse con APIs y servicios backend.
+
+**Características principales**:
+
+- Tipado fuerte: Soporte completo para TypeScript
+- Basado en Observables: Usa RxJS para operaciones asíncronas
+- Interceptores: Permite modificar requests/responses globalmente
+- Manejo de errores: Sistema robusto para gestionar errores HTTP
+- Testing: Fácil de mockear y testear
+
+**Configuracion basica**.
+
+```js
+// app.config.ts
+import { provideHttpClient, withFetch } from "@angular/common/http";
+
+export const appConfig: ApplicationConfig = {
+  providers: [provideHttpClient(withFetch())],
+};
+```
+
+### Argumentos dinamicos por URL
+
+Angular permite pasar argumentos dinámicos por URL de dos formas principales: **parámetros de ruta** y **query parameters**.
+
+```js
+// Archivo de rutas app.route.ts
+import { Routes } from "@angular/router";
+
+export const routes: Routes = [
+  {
+    path: "dashboard",
+    loadComponent: () => import("./gifs/pages/dashboard-page/dashboard-page"),
+    children: [
+      {
+        path: "history/:query",
+        loadComponent: () => import("./gifs/pages/history/history"),
+      },
+      {
+        path: "**",
+        redirectTo: "trending",
+      },
+    ],
+  },
+  {
+    path: "**",
+    redirectTo: "dashboard",
+  },
+];
+```
+
+Leer parametro de la ruta en el componente.
+
+```js
+// src/app/gifs/pages/history/history.ts
+query = toSignal(
+  inject(ActivatedRoute).params.pipe(map((params) => params["query"]))
+);
+```
+
+Template html
+
+```js
+// src/app/gifs/components/side-menu-options/gifs-side-menu-options.html
+ <a [routerLink]="['/dashboard/history', key]" class="w-full px-2"> Parametro de ruta </a>
+```
+
+### effect
+
+Los Effects en Angular 21 son una primitiva reactiva introducida como parte de la API de Signals de Angular. Permiten realizar efectos secundarios automáticamente cada vez que cambian los valores de las señales.
+
+- **Seguimiento Automático**: Los Effects rastrean automáticamente cualquier señal leída durante su ejecución
+- **Ejecución Reactiva**: Se vuelven a ejecutar cada vez que cambian las señales rastreadas
+- **Gestión de Efectos Secundarios**: Diseñados para operaciones como logging, sincronización o actualizaciones del DOM
+- **Soporte de Limpieza**: Pueden retornar funciones de limpieza para gestión de recursos
+
+```js
+// src/app/gifs/services/gifs.service.ts --- Ejemplo
+saveGifsToLocalStorage = effect(() => {
+  localStorage.setItem(
+    "gifSearchHistory",
+    JSON.stringify(this.searchHistory())
+  );
+});
+```
+
+### Masonry Design (Diseño Masonry)
+
+El diseño masonry es un patrón de disposición de elementos visuales donde los items se organizan en columnas verticales de manera óptima, similar a un muro de ladrillos (de ahí su nombre "masonry" = albañilería).
+
+**Características principales:**
+
+- Los elementos se colocan en la posición vertical disponible más corta
+- No hay espacios vacíos entre elementos de diferentes alturas
+- Las columnas mantienen un ancho fijo pero altura variable
+- Muy popular en galerías de imágenes y Pinterest
+
+```html
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+  <div class="grid gap-4">
+    <div>
+      <img
+        class="h-auto max-w-full rounded-base"
+        src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image.jpg"
+        alt=""
+      />
+    </div>
+    <div>
+      <img
+        class="h-auto max-w-full rounded-base"
+        src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg"
+        alt=""
+      />
+    </div>
+    <div>
+      <img
+        class="h-auto max-w-full rounded-base"
+        src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg"
+        alt=""
+      />
+    </div>
+  </div>
+  <!-- Se repite la estructura -->
+</div>
+```
