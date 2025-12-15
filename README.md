@@ -215,3 +215,79 @@ El diseño masonry es un patrón de disposición de elementos visuales donde los
   <!-- Se repite la estructura -->
 </div>
 ```
+
+### ViewChild
+
+`ViewChild` es un decorador de Angular que permite acceder a un elemento hijo, directiva o componente desde la clase del componente padre.
+
+**Características principales**:
+
+- `Acceso al DOM`: Permite obtener una referencia a elementos del template
+- `Acceso a componentes hijos`: Facilita la comunicación con componentes anidados
+- `Acceso a directivas`: Permite interactuar con directivas aplicadas en el template
+
+```js
+
+// Componente TS
+export default class TrendingPage {
+  gifService = inject(GifsService);
+
+  // Referencia al elemento HTML del componente
+  scrollDivRef = viewChild<ElementRef>('groupContainer');
+
+  onScroll(event: Event){
+
+    // Obtenemos la referencia al elemento HTML usando la referencia creada con viewChild
+    const scrollDiv = this.scrollDivRef()?.nativeElement;
+
+    console.log(scrollDiv);
+  }
+}
+
+// Componente HTML
+<div class="h-screen overflow-y-scroll grid grid-cols-2 md:grid-cols-4 gap-4 pt-5" (scroll)="onScroll($event)" #groupContainer>
+  @for (group of gifService.trendingGifGroup(); track $index) {
+    <div class="grid gap-4">
+      @for (gif of group; track gif.id) {
+        <div>
+          <img class="h-full max-w-full rounded-lg object-cover" [src]="gif.url" [alt]="gif.title"
+            alt="">
+        </div>
+      }
+    </div>
+  }
+</div>
+```
+
+### Determinar fin de Scroll
+
+Para determinar cuándo el usuario ha llegado al final del scroll, necesitamos entender tres conceptos clave:
+
+**Conceptos fundamentales del Scroll:**
+
+- **`clientHeight`**: Altura visible del contenedor (viewport) en píxeles - lo que el usuario puede ver en pantalla
+- **`scrollHeight`**: Altura total del contenido en píxeles - incluye el contenido que no es visible y requiere scroll
+- **`scrollTop`**: Cantidad de píxeles desplazados desde el inicio - cuánto scroll ha hecho el usuario
+
+**Fórmula para detectar el fin del scroll:**
+
+```typescript
+scrollTop + clientHeight >= scrollHeight;
+```
+
+**Visualización:**
+
+```
+┌─────────────────┐  ← Top (0)
+│                 │
+│   clientHeight  │  ← Viewport visible
+│   (visible)     │
+├─────────────────┤  ← scrollTop (posición actual)
+│                 │
+│   Contenido     │
+│   oculto que    │  ← scrollHeight (altura total)
+│   requiere      │
+│   scroll        │
+│                 │
+└─────────────────┘  ← Bottom
+```
