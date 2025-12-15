@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { GifsList } from '../../components/gifs-list/gifs-list';
 import { GifsService } from '../../services/gifs.service';
 import { Gif } from '../../interfaces/gif.interface';
-import { GifMapper } from '../../mappers/gif.mapper';
 
 @Component({
   selector: 'app-search-page',
