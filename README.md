@@ -291,3 +291,17 @@ scrollTop + clientHeight >= scrollHeight;
 │                 │
 └─────────────────┘  ← Bottom
 ```
+
+### Layout
+
+Un layout es una estructura o plantilla que define la disposición y organización
+visual de los elementos en una interfaz de usuario. Define cómo se posicionan
+y distribuyen los componentes en la pantalla. Es un componente comun y corriente que sualemte es usado para dar estilo a todas las paginas hijas
+
+En el contexto de desarrollo web y aplicaciones, un layout típicamente incluye:
+
+- La estructura general de la página (header, sidebar, content, footer)
+- El sistema de rejilla o grid para posicionar elementos
+- Los espaciados y márgenes entre componentes
+- La disposición responsive para diferentes tamaños de pantalla
+- Los contenedores y wrappers que organizan el contenido
