@@ -7,14 +7,14 @@ export class CountryMapper {
       cca2: item.cca2,
       flag: item.flag,
       flagSvg: item.flags.svg,
-      name: item.name.common,
+      name: item.translations['spa'].common ?? 'No spanish name',
       capital: item.capital.join(', '),
       population: item.population
     }
   }
 
   static mapRestCountryItemsToCountryArray(items: RESTCountry[]): Country[]{
-    return items.map(this.mapRestCountrytoCountry);
+    return items.map(CountryMapper.mapRestCountrytoCountry);
   }
 }
 
