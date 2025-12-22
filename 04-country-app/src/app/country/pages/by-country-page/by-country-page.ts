@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, resource, signal } from '@a
 import { SearchInput } from '../../components/search-input/search-input';
 import { List } from '../../components/list/list';
 import { CountryService } from '../../services/country.service';
-import { firstValueFrom, of } from 'rxjs';
+import { of } from 'rxjs';
 import { rxResource } from '@angular/core/rxjs-interop';
 
 @Component({

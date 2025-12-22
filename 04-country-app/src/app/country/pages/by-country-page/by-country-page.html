@@ -1,7 +1,3 @@
 <country-search-input (byCapital)="query.set($event)" placeholder="Search by country" />
 
-@if (countryResource.error()) {
-<h3>{{ countryResource.error()}}</h3>
-} @else {
-<country-list [countries]="countryResource.value()!" />
-}
+<country-list [countries]="countryResource.value() ?? []" [errorMessage]="countryResource.error()" [isEmpty]="countryResource.value()?.length === 0" [isLoading]="countryResource.isLoading()" />
