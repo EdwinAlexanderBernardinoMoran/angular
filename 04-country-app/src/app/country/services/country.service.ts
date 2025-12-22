@@ -25,7 +25,7 @@ export class CountryService {
     );
   }
 
-  searchByCountry(query: string){
+  searchByCountry(query: string): Observable<Country[]> {
     query = query.toLowerCase();
 
     return this.http.get<RESTCountry[]>(`${API_URL}/name/${query}`).pipe(
@@ -34,6 +34,19 @@ export class CountryService {
       catchError((error) => {
         console.error('Error fetching countries by name:', error);
         return throwError(() => new Error(`No country with that name was found ${query}`));
+      })
+    )
+  }
+
+  searchCountryByAlphaCode(code: string): Observable<Country | undefined>{
+
+    return this.http.get<RESTCountry[]>(`${API_URL}/alpha/${code}`).pipe(
+      map(CountryMapper.mapRestCountryItemsToCountryArray),
+      map( countries => countries.at(0)),
+      delay(2000),
+      catchError((error) => {
+        console.error('Error fetching countries by name:', error);
+        return throwError(() => new Error(`No country with that name was found ${code}`));
       })
     )
   }

@@ -1,1 +1,11 @@
-<p>country-page works!</p>
+@if (countryResoruce.error()) {
+  <not-found/>
+}
+
+@if (countryResoruce.isLoading()) {
+  <loading/>
+}
+
+@if (countryResoruce.hasValue()) {
+  <country-information [country]="countryResoruce.value()"/>
+}
