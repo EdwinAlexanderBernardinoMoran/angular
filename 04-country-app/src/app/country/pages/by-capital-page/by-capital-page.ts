@@ -20,6 +20,7 @@ export class ByCapitalPage {
     loader: async ({params}) => {
       if (!params.query) return [];
 
+      // Toma el primer valor emitido por el Observable y lo convierte en una Promesa
       return await firstValueFrom(
         this.countryService.searchByCapital(params.query)
       )
