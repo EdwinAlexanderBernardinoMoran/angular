@@ -38,16 +38,16 @@ export class CountryService {
   searchByCountry(query: string): Observable<Country[]> {
     query = query.toLowerCase();
 
-    if (this.queryCacheCountry.has(query)){
-      return of(this.queryCacheCountry.get(query) ?? []);
-    }
+    // if (this.queryCacheCountry.has(query)){
+    //   return of(this.queryCacheCountry.get(query) ?? []);
+    // }
 
     return this.http.get<RESTCountry[]>(`${API_URL}/name/${query}`).pipe(
       map(CountryMapper.mapRestCountryItemsToCountryArray),
-      tap(countries => this.queryCacheCountry.set(query, countries)),
-      delay(2000),
+      // tap(countries => this.queryCacheCountry.set(query, countries)),
+      // delay(2000),
       catchError((error) => {
-        console.error('Error fetching countries by name:', error);
+        console.log('Error fetching countries by name:', error);
         return throwError(() => new Error(`No country with that name was found ${query}`));
       })
     )
