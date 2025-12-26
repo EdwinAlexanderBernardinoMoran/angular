@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject, linkedSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, linkedSignal, signal } from '@angular/core';
 import { SearchInput } from '../../components/search-input/search-input';
 import { List } from '../../components/list/list';
 import { CountryService } from '../../services/country.service';
-import { of } from 'rxjs';
+import { of, tap } from 'rxjs';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -15,25 +15,33 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ByCapitalPage {
 
   countryService = inject(CountryService);
-
   activatedRoute = inject(ActivatedRoute);
+
   router = inject(Router)
 
   queryParam = this.activatedRoute.snapshot.queryParamMap.get('query') ?? '';
   query = linkedSignal(() =>this.queryParam);
+  errorMessage = signal<string | null>(null);
 
   countryResource = rxResource({
     params: () => ({ query: this.query()}),
 
     stream: ({ params }) => {
       console.log({'query': params.query});
+      this.errorMessage.set(null);
 
       if (!params.query) return of([]);
       this.router.navigate(['/country/by-capital'], {
         queryParams: { query: params.query }
       });
 
-      return this.countryService.searchByCapital(params.query);
+      return this.countryService.searchByCapital(params.query).pipe(
+        tap(countries => {
+          if (countries.length === 0) {
+            this.errorMessage.set(`No se encontró ningún país con la capital: ${params.query}`);
+          }
+        })
+      );
     }
   });
 

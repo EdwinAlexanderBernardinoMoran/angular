@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject, resource, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, linkedSignal, signal } from '@angular/core';
 import { SearchInput } from '../../components/search-input/search-input';
 import { List } from '../../components/list/list';
 import { CountryService } from '../../services/country.service';
-import { of } from 'rxjs';
+import { of, tap } from 'rxjs';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'country-by-country-page',
@@ -13,15 +14,36 @@ import { rxResource } from '@angular/core/rxjs-interop';
 })
 export default class ByCountryPage {
   countryService = inject(CountryService);
+  activatedRoute = inject(ActivatedRoute);
 
-  query = signal('');
+  router = inject(Router);
+
+  // 1. Tomamos el valor del query param 'query' de la URL
+  queryParam = this.activatedRoute.snapshot.queryParamMap.get('query') ?? '';
+
+  // 2. Asignamos el query param a una linkedSignal
+  query = linkedSignal(() => this.queryParam);
+  errorMessage = signal<string | null>(null);
+
   countryResource = rxResource({
     params: () => ({query: this.query()}),
 
     stream: ({ params }) => {
-      if (!params.query) return of([]);
+      console.log({'query': params.query});
+      this.errorMessage.set(null);
 
-      return this.countryService.searchByCountry(params.query);
+      if (!params.query) return of([]);
+      this.router.navigate(['/country/by-country'], {
+        queryParams: { query: params.query }
+      });
+
+      return this.countryService.searchByCountry(params.query).pipe(
+        tap(countries => {
+          if (countries.length === 0) {
+            this.errorMessage.set(`No se encontró ningún país con el nombre: ${params.query}`);
+          }
+        })
+      );
     }
   })
 

@@ -1,3 +1,4 @@
-<country-search-input (byCapital)="query.set($event)" placeholder="Search by country" />
+<!-- 3. Asignamos el valor del query de la URL al input -->
+<country-search-input (byCapital)="query.set($event)" placeholder="Search by country" [initialValue]="query()"/>
 
-<country-list [countries]="countryResource.value() ?? []" [errorMessage]="countryResource.error()" [isEmpty]="countryResource.value()?.length === 0" [isLoading]="countryResource.isLoading()" />
+<country-list [countries]="countryResource.value() ?? []" [errorMessage]="errorMessage()" [isEmpty]="countryResource.value()?.length === 0" [isLoading]="countryResource.isLoading()" />
