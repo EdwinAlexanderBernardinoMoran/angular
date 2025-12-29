@@ -88,6 +88,34 @@ export class NavigationComponent {
 }
 ```
 
+### Router
+
+Angular Router es el módulo encargado de gestionar la navegación dentro de una aplicación Angular. Permite cargar y mostrar diferentes componentes según la URL, sin recargar la página, facilitando la creación de aplicaciones de una sola página (SPA). Además, soporta rutas anidadas, parámetros, guards de seguridad, carga perezosa (lazy loading) y control de acceso, mejorando la organización, rendimiento y experiencia de usuario.
+
+```js
+// Exportacion de modulos de angular...
+export class ByCapitalPage {
+
+  activatedRoute = inject(ActivatedRoute);
+
+  this.router.navigate(['/country/by-capital'], {
+    queryParams: { query: params.query }
+  });
+}
+```
+
+## ActivatedRoute
+
+`ActivatedRoute` es un servicio del módulo `@angular/router` que proporciona acceso a la información de la ruta actualmente activada. Permite obtener parámetros de ruta, query parameters, fragmentos, datos estáticos y reaccionar a cambios en la URL mediante observables. No es mas que la inyeccion de la ruta ativa con todas su propiedades
+
+```js
+import { ActivatedRoute } from "@angular/router";
+
+export class ByCapitalPage {
+  activatedRoute = inject(ActivatedRoute).snapshot.params["code"];
+}
+```
+
 ## HttpClient
 
 Es el servicio oficial de Angular para realizar peticiones HTTP. Es la forma moderna y recomendada de comunicarse con APIs y servicios backend.
@@ -305,3 +333,42 @@ En el contexto de desarrollo web y aplicaciones, un layout típicamente incluye:
 - Los espaciados y márgenes entre componentes
 - La disposición responsive para diferentes tamaños de pantalla
 - Los contenedores y wrappers que organizan el contenido
+
+## S11 - Country App - Intermedio/Avanzado
+
+### linkedSignal - Preservar resultados en cache
+
+Cuando tenemos una señal que es producto de una computacion algun calculo, se recomienda utilizar un objecto en Angular llamado el `linkedSignal` nos permite inicializar una señal con algun tipo de proceso y nos permite utilizarla como una señal normal despues de haber sido inicializada.
+
+```js
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  linkedSignal,
+} from "@angular/core";
+import { SearchInput } from "../../components/search-input/search-input";
+import { List } from "../../components/list/list";
+import { CountryService } from "../../services/country.service";
+import { ActivatedRoute } from "@angular/router";
+
+@Component({
+  selector: "app-by-capital-page",
+  imports: [SearchInput, List],
+  templateUrl: "./by-capital-page.html",
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class ByCapitalPage {
+  countryService = inject(CountryService);
+
+  activatedRoute = inject(ActivatedRoute);
+  queryParam = this.activatedRoute.snapshot.queryParamMap.get("query") ?? "";
+
+  // Ejemplo
+  query = linkedSignal(() => this.queryParam);
+}
+```
+
+## S12 - Pipes
+
+Los pipes en Angular son transformadores de datos que se aplican en las plantillas para formatear valores antes de mostrarlos al usuario y extendienden de `@angular/common` existen pipes de Numericos, de fechas, porcentaje entre otros.
